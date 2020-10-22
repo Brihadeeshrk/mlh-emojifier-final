@@ -7,6 +7,12 @@ module.exports = function saveFace(imageUrl, data) {
   MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, db) => {
     if (err) throw err;
     const dbo = db.db();
-    // TODO: insert the object into the database
+    dbo.createCollection("faces");
+    const myobjFace = { imageUrl: imageUrl, faceAttributes: data};
+    dbo.collection("faces").insertOne(myobjFace, function(err,res) {
+      if (err) throw err;
+      console.log("1 register inserted");
+      db.close;
+    });
   });
 };

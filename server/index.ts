@@ -1,3 +1,5 @@
+import { application, response } from "express";
+
 const express = require('express');
 const cors = require('cors');
 const request = require('request');
@@ -11,8 +13,8 @@ app.use(cors({
 
 app.use(express.static(__dirname + "/../dist/"));
 
-const uriBase = 'https://eastus.api.cognitive.microsoft.com/face/v1.0/detect/';
-const subscriptionKey = 'dontstealmykeypls';
+const uriBase = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect/';
+const subscriptionKey = '7e6aefc1cb5a4d9ca7140797a2853761';
 
 const port = 3000;
 
@@ -33,6 +35,14 @@ app.post('/', (req, res) => {
     }
   };
 
+  request.post(options, (error, response, body) => {
+    console.log(body);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(body);
+    if(response.statusCode == "200") {
+      saveFace(imageUrl,JSON.stringify(body));
+    }
+  })
   // TODO: Send Request to Face API
   // TODO: Send Face API response to front-end
   // TODO: Save Face API response to database
